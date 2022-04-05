@@ -9,8 +9,11 @@ export const PrefChart = memo(
   ({ populationList }: { populationList: PopulationList[] }) => {
     const [labels, setLabels] = useState<number[]>([]);
     const [dataSets, setDataSets] = useState<Datasets[]>([]);
-    
-    console.log("チャート");
+    const [checkedPopulationList, setCheckedPopulationList] = useState<
+      PopulationList[]
+    >([]);
+
+    // console.log("チャート");
     //ラベルの設定
     // useEffect(() => {
     //   const _labels: any[] = [];
@@ -25,11 +28,15 @@ export const PrefChart = memo(
 
     //取得済のグラフのデータをセット
     useEffect(() => {
-      const checkedPopulationList = populationList.filter((e) => {
+      const _checkedPopulationList = populationList.filter((e) => {
         return e.checked === true;
       });
-      console.log("checked:", checkedPopulationList);
+      console.log("checked:", _checkedPopulationList);
+      setCheckedPopulationList(_checkedPopulationList);
       
+    }, [populationList]);
+
+    useEffect(() => {
       //ラベルの設定
       const _labels: any[] = [];
       if (checkedPopulationList[0] !== undefined) {
@@ -38,7 +45,7 @@ export const PrefChart = memo(
         });
       }
       setLabels(_labels);
-      console.log("ラベル",labels);
+      console.log("ラベル", labels);
 
       const _dataSets: Datasets[] = [];
 
@@ -55,10 +62,10 @@ export const PrefChart = memo(
         };
         _dataSets.push(dataSet);
       });
+      console.log("dataSets:", _dataSets);
       setDataSets(_dataSets);
-      console.log("dataSets:", dataSets);
-    }, [populationList]);
-
+      
+    }, [checkedPopulationList]);
 
     const data: ChartData = {
       labels: labels,

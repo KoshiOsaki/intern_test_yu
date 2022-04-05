@@ -10,7 +10,7 @@ import { Meta } from "../components/Meta";
 const Home: NextPage = () => {
   const [prefList, setPrefList] = useState<Pref[]>([]);
   const [populationList, setPopulationList] = useState<PopulationList[]>([]);
-  console.log("最初");
+  // console.log("最初");
 
   //都道府県リストの作成
   useEffect(() => {
@@ -29,7 +29,7 @@ const Home: NextPage = () => {
           setPrefList(_prefList);
         });
     }
-    console.log("prefリスト完成", prefList);
+    // console.log("prefリスト完成", prefList);
   }, []);
 
   //人口データリストの作成
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
       }
     }
     setPopulationList(defaultPopulationList);
-    console.log("population完成",populationList);
+    // console.log("population完成",populationList);
   }, [prefList]);
 
   //チェック済の人口データを取得
