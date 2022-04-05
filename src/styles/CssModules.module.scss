@@ -1,0 +1,24 @@
+.container {
+  background-color: rgba(142, 214, 226, 0.644);
+  padding: 3em;
+}
+
+.title {
+  color: rgba(8, 241, 105, 0.979);
+  text-align: center;
+  background-color: rgba(8, 82, 241, 0.979);
+}
+
+.checkwrap {
+  flex-wrap: wrap;
+  display: flex;
+}
+
+.checklist {
+  width: 16.6%;
+}
+
+.chart {
+  background-color: white;
+  margin: 0.5;
+}

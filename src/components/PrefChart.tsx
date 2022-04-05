@@ -1,61 +1,77 @@
 import "chart.js/auto";
 import { ChartData } from "chart.js";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
-import { Datasets, PopulationList, YVData } from "../types/pref";
+import { Datasets, PopulationList, YearValueData } from "../types/pref";
+import styles from "../styles/CssModules.module.scss";
 
-export const PrefChart = ({
-  populationList,
-}: {
-  populationList: PopulationList[];
-}) => {
-  const [labels, setLabels] = useState<any[]>([]);
-  const [dataSets, setDataSets] = useState<Datasets[]>([]);
-
-  //ラベルの設定
-  useEffect(() => {
-    const _labels: any[] = [];
-    if (populationList[0] !== undefined) {
-      populationList[0].population.forEach((data: any) => {
-        _labels.push(data.year);
-      });
-    }
-    setLabels(_labels);
-  }, [populationList]);
-
-  //取得済のグラフのデータをセット
-  useEffect(() => {
-    const checkedPopulationList = populationList.filter((e) => {
-      return e.checked === true;
-    });
-    const _dataSets: Datasets[] = [];
+export const PrefChart = memo(
+  ({ populationList }: { populationList: PopulationList[] }) => {
+    const [labels, setLabels] = useState<number[]>([]);
+    const [dataSets, setDataSets] = useState<Datasets[]>([]);
     
-    checkedPopulationList.forEach((p: PopulationList) => {
-      const valueList: number[] = [];
-      p.population.forEach((yv: YVData) => {
-        valueList.push(yv.value);
+    console.log("チャート");
+    //ラベルの設定
+    // useEffect(() => {
+    //   const _labels: any[] = [];
+    //   if (populationList[0] !== undefined) {
+    //     populationList[0].population.forEach((yv: YearValueData) => {
+    //       _labels.push(yv.year);
+    //     });
+    //   }
+    //   setLabels(_labels);
+    //   console.log("ラベル",labels);
+    // }, [populationList]);
+
+    //取得済のグラフのデータをセット
+    useEffect(() => {
+      const checkedPopulationList = populationList.filter((e) => {
+        return e.checked === true;
       });
-      const dataSet: Datasets = {
-        label: p.name,
-        data: valueList,
-        pointHoverRadius: 12,
-        tension: 0.2,
-      };
-      _dataSets.push(dataSet);
-    });
+      console.log("checked:", checkedPopulationList);
+      
+      //ラベルの設定
+      const _labels: any[] = [];
+      if (checkedPopulationList[0] !== undefined) {
+        checkedPopulationList[0].population.forEach((yv: YearValueData) => {
+          _labels.push(yv.year);
+        });
+      }
+      setLabels(_labels);
+      console.log("ラベル",labels);
 
-    setDataSets(_dataSets);
-    console.log(dataSets);
-  }, [populationList]);
+      const _dataSets: Datasets[] = [];
 
-  const data: ChartData = {
-    labels: labels,
-    datasets: dataSets,
-  };
+      checkedPopulationList.forEach((p: PopulationList) => {
+        const valueList: number[] = [];
+        p.population.forEach((yv: YearValueData) => {
+          valueList.push(yv.value);
+        });
+        const dataSet: Datasets = {
+          label: p.name,
+          data: valueList,
+          pointHoverRadius: 12,
+          tension: 0.2,
+        };
+        _dataSets.push(dataSet);
+      });
+      setDataSets(_dataSets);
+      console.log("dataSets:", dataSets);
+    }, [populationList]);
 
-  return (
-    <div>
-      <Chart type="line" data={data} />
-    </div>
-  );
-};
+
+    const data: ChartData = {
+      labels: labels,
+      datasets: dataSets,
+    };
+
+    return (
+      <div
+        className={styles.chart}
+        style={{ marginTop: "40px", padding: "20px" }}
+      >
+        <Chart type="line" data={data} color="black" />
+      </div>
+    );
+  }
+);

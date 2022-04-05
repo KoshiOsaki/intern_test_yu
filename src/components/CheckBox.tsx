@@ -1,4 +1,6 @@
-export const CheckBox = ({
+import { memo } from "react";
+
+export const CheckBox = memo(({
   id,
   value,
   handleChange,
@@ -15,6 +17,7 @@ export const CheckBox = ({
         fetchPopulation();
       }}
       value={value}
+      style={{display:"inline"}}
     />
   );
-};
+});

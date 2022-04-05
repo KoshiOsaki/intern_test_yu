@@ -13,11 +13,11 @@ export interface Datasets{
 export interface PopulationList{
     id:number,
     name:string,
-    population:YVData[]
+    population:YearValueData[]
     checked:boolean
 }
 
-export interface YVData{
+export interface YearValueData{
     year:number,
     value:number
 }
