@@ -1,12 +1,12 @@
 import { memo } from "react";
 
-export const CheckBox = memo(({
+export const CheckBox = memo(function CheckBox({
   id,
   value,
   handleChange,
   checked,
   fetchPopulation,
-}: any) => {
+}: any) {
   return (
     <input
       id={id}
@@ -17,7 +17,7 @@ export const CheckBox = memo(({
         fetchPopulation();
       }}
       value={value}
-      style={{display:"inline"}}
+      style={{ display: "inline" }}
     />
   );
 });

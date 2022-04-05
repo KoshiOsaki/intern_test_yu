@@ -5,8 +5,8 @@ import { Chart } from "react-chartjs-2";
 import { Datasets, PopulationList, YearValueData } from "../types/pref";
 import styles from "../styles/CssModules.module.scss";
 
-export const PrefChart = memo(
-  ({ populationList }: { populationList: PopulationList[] }) => {
+export const PrefChart = memo(function PrefChart
+  ({ populationList }: { populationList: PopulationList[] }) {
     const [labels, setLabels] = useState<number[]>([]);
     const [dataSets, setDataSets] = useState<Datasets[]>([]);
     const [checkedPopulationList, setCheckedPopulationList] = useState<
