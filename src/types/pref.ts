@@ -9,3 +9,15 @@ export interface Datasets{
     pointHoverRadius:number,
     tension:number
 }
+
+export interface PopulationList{
+    id:number,
+    name:string,
+    population:YVData[]
+    checked:boolean
+}
+
+export interface YVData{
+    year:number,
+    value:number
+}

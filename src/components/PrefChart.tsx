@@ -1,32 +1,18 @@
 import "chart.js/auto";
-import { ChartData, ChartDataset } from "chart.js";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { ChartData } from "chart.js";
+import { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
-import { Datasets } from "../types/pref";
+import { Datasets, PopulationList, YVData } from "../types/pref";
 
-export const PrefChart = ({ populationList }: any) => {
+export const PrefChart = ({
+  populationList,
+}: {
+  populationList: PopulationList[];
+}) => {
   const [labels, setLabels] = useState<any[]>([]);
-  const [prefData, setPrefData] = useState<any[]>([]);
+  const [dataSets, setDataSets] = useState<Datasets[]>([]);
 
-  useEffect(() => {
-    const _prefData: Datasets[] = [
-      {
-        label: "",
-        data: [],
-        pointHoverRadius: 12,
-        tension: 0.2,
-      },
-    ];
-    if (populationList[0] !== undefined) {
-      _prefData[0].label = populationList[0].name;
-      populationList[0].population.forEach((data: any) => {
-        _prefData[0].data.push(data.value);
-      });
-    }
-    setPrefData(_prefData);
-  }, [populationList]);
-
-  
+  //ラベルの設定
   useEffect(() => {
     const _labels: any[] = [];
     if (populationList[0] !== undefined) {
@@ -37,9 +23,34 @@ export const PrefChart = ({ populationList }: any) => {
     setLabels(_labels);
   }, [populationList]);
 
+  //取得済のグラフのデータをセット
+  useEffect(() => {
+    const checkedPopulationList = populationList.filter((e) => {
+      return e.checked === true;
+    });
+    const _dataSets: Datasets[] = [];
+    
+    checkedPopulationList.forEach((p: PopulationList) => {
+      const valueList: number[] = [];
+      p.population.forEach((yv: YVData) => {
+        valueList.push(yv.value);
+      });
+      const dataSet: Datasets = {
+        label: p.name,
+        data: valueList,
+        pointHoverRadius: 12,
+        tension: 0.2,
+      };
+      _dataSets.push(dataSet);
+    });
+
+    setDataSets(_dataSets);
+    console.log(dataSets);
+  }, [populationList]);
+
   const data: ChartData = {
     labels: labels,
-    datasets: prefData,
+    datasets: dataSets,
   };
 
   return (
