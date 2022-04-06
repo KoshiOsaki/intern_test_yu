@@ -8,7 +8,6 @@ import { CheckBox } from "../components/CheckBox";
 import { Meta } from "../components/Meta";
 import { PopulationContext } from "../providers/PopulationProvider";
 
-
 const Home: NextPage = () => {
   const [prefList, setPrefList] = useState<Pref[]>([]);
   const { populationList, setPopulationList } = useContext(PopulationContext);
@@ -54,8 +53,8 @@ const Home: NextPage = () => {
   const fetchPopulation = () => {
     if (process.env.NEXT_PUBLIC_API_KEY) {
       const headers = { "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY };
+      const _populationList = [...populationList];
       for (var i = 0; i < 47; i++) {
-        const _populationList = [...populationList];
         if (_populationList[i].checked) {
           axios
             .get(
@@ -75,8 +74,8 @@ const Home: NextPage = () => {
         } else {
           _populationList[i].population = [];
         }
-        setPopulationList(_populationList);
       }
+      setPopulationList(_populationList);
     }
   };
 
@@ -84,6 +83,16 @@ const Home: NextPage = () => {
     const newPopulationList = [...populationList];
     newPopulationList[id].checked = !newPopulationList[id].checked; //マシな書き方は？
     setPopulationList(newPopulationList);
+  };
+
+  const onClickReset = () => {
+    console.log("リセット");
+    const _populationList: PopulationList[] = [];
+    populationList.map((p: PopulationList) => {
+      p.checked = false;
+      _populationList.push(p);
+    });
+    setPopulationList(_populationList);
   };
 
   return (
@@ -99,7 +108,7 @@ const Home: NextPage = () => {
                   <CheckBox
                     id={p.id}
                     value={p.name}
-                    handleChange={handleChange}
+                    handleChange={() => handleChange(p.id)}
                     checked={p.checked}
                     fetchPopulation={fetchPopulation}
                   />
@@ -107,6 +116,9 @@ const Home: NextPage = () => {
                 </label>
               </div>
             ))}
+            <button className={styles.checklist} onClick={onClickReset}>
+              選択をリセット
+            </button>
           </div>
           <PrefChart />
         </div>

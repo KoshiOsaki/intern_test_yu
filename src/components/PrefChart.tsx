@@ -10,33 +10,10 @@ export const PrefChart = memo(function PrefChart() {
   const { populationList, setPopulationList } = useContext(PopulationContext);
   const [labels, setLabels] = useState<number[]>([]);
   const [dataSets, setDataSets] = useState<Datasets[]>([]);
-  // const [checkedPopulationList, setCheckedPopulationList] = useState<
-  //   PopulationList[]
-  // >([]);
-
-  // console.log("チャート");
-  //ラベルの設定
-  // useEffect(() => {
-  //   const _labels: any[] = [];
-  //   if (populationList[0] !== undefined) {
-  //     populationList[0].population.forEach((yv: YearValueData) => {
-  //       _labels.push(yv.year);
-  //     });
-  //   }
-  //   setLabels(_labels);
-  //   console.log("ラベル",labels);
-  // }, [populationList]);
-
-  //取得済のグラフのデータをセット
-  // useEffect(() => {
-  //   const _checkedPopulationList = populationList.filter((e) => {
-  //     return e.checked === true;
-  //   });
-  //   console.log("checked:", _checkedPopulationList);
-  //   setCheckedPopulationList(_checkedPopulationList);
-  // }, [populationList]);
+  
 
   const makeData = () => {
+    
     const checkedPopulationList = populationList.filter((e: PopulationList) => {
       return e.checked === true;
     });
@@ -48,23 +25,15 @@ export const PrefChart = memo(function PrefChart() {
         _labels.push(yv.year);
       });
     }
-    
-
     setLabels(_labels);
-    console.log("ラベル", labels);
 
+     //描画用のデータをセット
     const _dataSets: Datasets[] = [];
-
-    //データセット
     checkedPopulationList.forEach((c: PopulationList) => {
       const valueList: number[] = [];
-      console.log("value入れるよ", c.population);
-
       c.population.forEach((yv: YearValueData) => {
         valueList.push(yv.value);
       });
-      console.log("valueある？", valueList);
-
       const dataSet: Datasets = {
         label: c.name,
         data: valueList,
@@ -78,7 +47,10 @@ export const PrefChart = memo(function PrefChart() {
     // console.log("dataSets:", _dataSets);
     setDataSets(_dataSets);
   };
-  useEffect(makeData, [populationList]);
+  const waitMake=()=>{
+    setTimeout(makeData,400)
+  }
+  useEffect(waitMake, [populationList]);
 
 
   const data: ChartData = {

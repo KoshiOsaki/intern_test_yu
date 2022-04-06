@@ -14,7 +14,7 @@ export const CheckBox = memo(function CheckBox({
       type="checkbox"
       checked={checked}
       onChange={() => {
-        handleChange(id);
+        handleChange();
         fetchPopulation();
       }}
       value={value}
