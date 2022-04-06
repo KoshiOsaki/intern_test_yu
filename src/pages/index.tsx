@@ -1,19 +1,21 @@
 import { NextPage } from "next";
 import axios from "axios";
 import styles from "../styles/CssModules.module.scss";
-import { useCallback, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PopulationList, Pref, YearValueData } from "../types/pref";
 import { PrefChart } from "../components/PrefChart";
 import { CheckBox } from "../components/CheckBox";
 import { Meta } from "../components/Meta";
+import { PopulationContext } from "../providers/PopulationProvider";
+
 
 const Home: NextPage = () => {
   const [prefList, setPrefList] = useState<Pref[]>([]);
-  const [populationList, setPopulationList] = useState<PopulationList[]>([]);
-  // console.log("最初");
+  const { populationList, setPopulationList } = useContext(PopulationContext);
 
-  //都道府県リストの作成
+  // 都道府県リストの作成
   useEffect(() => {
+    console.log("都道府県");
     if (process.env.NEXT_PUBLIC_API_KEY) {
       var headers = { "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY };
       const _prefList: Pref[] = [];
@@ -29,15 +31,14 @@ const Home: NextPage = () => {
           setPrefList(_prefList);
         });
     }
-    // console.log("prefリスト完成", prefList);
   }, []);
 
   //人口データリストの作成
   useEffect(() => {
+    console.log("人口リスト");
     const defaultPopulationList: PopulationList[] = [];
-    for (var i = 0; i < 47; i++) {
-      if (prefList[i]) {
-        //意味なし?
+    if (prefList[0]) {
+      for (var i = 0; i < 47; i++) {
         defaultPopulationList.push({
           id: i,
           name: prefList[i].prefName,
@@ -47,15 +48,15 @@ const Home: NextPage = () => {
       }
     }
     setPopulationList(defaultPopulationList);
-    // console.log("population完成",populationList);
   }, [prefList]);
 
-  //チェック済の人口データを取得
-  const fetchPopulation =  () => {
+  //チェック済の人口データを取得する関数
+  const fetchPopulation = () => {
     if (process.env.NEXT_PUBLIC_API_KEY) {
       const headers = { "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY };
       for (var i = 0; i < 47; i++) {
-        if (populationList[i].checked) {
+        const _populationList = [...populationList];
+        if (_populationList[i].checked) {
           axios
             .get(
               `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${
@@ -66,46 +67,49 @@ const Home: NextPage = () => {
               }
             )
             .then((res) => {
-              populationList[i].population = [];
+              _populationList[i].population = [];
               res.data.result.data[0].data.forEach((yv: YearValueData) => {
-                populationList[i].population.push(yv);
+                _populationList[i].population.push(yv);
               });
             });
         } else {
-          populationList[i].population = [];
+          _populationList[i].population = [];
         }
+        setPopulationList(_populationList);
       }
     }
-  }
+  };
 
-  const handleChange = (id: any) => {
+  const handleChange = (id: number) => {
     const newPopulationList = [...populationList];
     newPopulationList[id].checked = !newPopulationList[id].checked; //マシな書き方は？
     setPopulationList(newPopulationList);
-  }
+  };
 
   return (
     <>
       <Meta />
       <div className={styles.container}>
-        <h1 className={styles.title}>都道府県の総人口推移</h1>
-        <div className={styles.checkwrap}>
-          {populationList.map((p) => (
-            <div  key={p.id} className={styles.checklist}>
-              <label style={{ display: "inline" }}>
-                <CheckBox
-                  id={p.id}
-                  value={p.name}
-                  handleChange={handleChange}
-                  checked={p.checked}
-                  fetchPopulation={fetchPopulation}
-                />
-                {p.name}
-              </label>
-            </div>
-          ))}
+        <div className={styles.mainbox}>
+          <h1 className={styles.title}>都道府県の総人口推移</h1>
+          <div className={styles.checkwrap}>
+            {populationList.map((p: PopulationList) => (
+              <div key={p.id} className={styles.checklist}>
+                <label style={{ display: "inline" }}>
+                  <CheckBox
+                    id={p.id}
+                    value={p.name}
+                    handleChange={handleChange}
+                    checked={p.checked}
+                    fetchPopulation={fetchPopulation}
+                  />
+                  {p.name}
+                </label>
+              </div>
+            ))}
+          </div>
+          <PrefChart />
         </div>
-        <PrefChart populationList={populationList} />
       </div>
     </>
   );

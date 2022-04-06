@@ -1,12 +1,26 @@
 .container {
-  background-color: rgba(142, 214, 226, 0.644);
+  background-color: rgba(202, 202, 202, 0.923);
   padding: 3em;
+  margin: 0 auto;
+}
+.mainbox {
+  width: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    width: 90%;
+  }
+  .mainbox {
+    width: 800px;
+    margin: 0 auto;
+  }
 }
 
 .title {
-  color: rgba(8, 241, 105, 0.979);
+  color: rgba(49, 141, 228, 0.979);
   text-align: center;
-  background-color: rgba(8, 82, 241, 0.979);
+  background-color: rgba(10, 2, 2, 0.979);
 }
 
 .checkwrap {

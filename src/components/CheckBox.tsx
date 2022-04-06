@@ -7,6 +7,7 @@ export const CheckBox = memo(function CheckBox({
   checked,
   fetchPopulation,
 }: any) {
+
   return (
     <input
       id={id}
