@@ -1,5 +1,5 @@
 .container {
-  background-color: rgba(202, 202, 202, 0.923);
+  background-color: #eeeeee;
   padding: 3em;
   margin: 0 auto;
 }
@@ -18,9 +18,11 @@
 }
 
 .title {
-  color: rgba(49, 141, 228, 0.979);
-  text-align: center;
-  background-color: rgba(10, 2, 2, 0.979);
+  padding: 0.2em 0.5em;
+  background: linear-gradient(to right, rgb(255, 124, 111), #ffc994);
+  color: black;
+  letter-spacing: 0.12em;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.56);
 }
 
 .checkwrap {
@@ -30,6 +32,43 @@
 
 .checklist {
   width: 16.6%;
+  font-size: small;
+  margin-bottom: 7px;
+}
+@media screen and (min-width: 600px) {
+  .checklist {
+    font-size: medium;
+  }
+}
+.checklist:hover {
+  cursor: pointer;
+  background: #f56500;
+}
+
+.label {
+  display: inline;
+}
+
+.input:hover {
+  cursor: pointer !important;
+}
+
+.button {
+  width: 15%;
+  font-size: x-small;
+  border-radius: 100vh;
+  background-color: #eb8740;
+  border: none;
+}
+@media screen and (min-width: 600px) {
+  .button {
+    font-size: small;
+  }
+}
+
+.button:hover {
+  background: #f56500;
+  cursor: pointer;
 }
 
 .chart {

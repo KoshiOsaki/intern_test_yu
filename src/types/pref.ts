@@ -7,13 +7,16 @@ export interface Datasets{
     label:string,
     data:number[],
     pointHoverRadius:number,
-    tension:number
+    tension:number,
+    borderColor:string,
+    backgroundColor:string
+
 }
 
-export interface PopulationList{
+export interface Population{
     id:number,
     name:string,
-    population:YearValueData[]
+    population:YearValueData[],
     checked:boolean
 }
 
