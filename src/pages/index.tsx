@@ -78,7 +78,7 @@ const Home: NextPage<Props> = ({ defaultPopulationList }: Props) => {
           <h1 className={styles.title}>都道府県の総人口推移</h1>
           <div className={styles.checkwrap}>
             {populationList.map((p: Population) => (
-              <CheckBox id={p.id} />
+              <CheckBox id={p.id} key={p.id}/>
             ))}
             <button className={styles.button} onClick={onClickReset}>
               選択をリセット

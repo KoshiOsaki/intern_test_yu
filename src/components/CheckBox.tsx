@@ -57,6 +57,7 @@ export const CheckBox = memo(function CheckBox({ id }: Props) {
         checked={populationList[id].checked}
         value={populationList[id].name}
         className={styles.input}
+        onChange={() => {}}
       />
       <p className={styles.label}>{populationList[id].name}</p>
     </div>
