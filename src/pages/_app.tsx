@@ -4,7 +4,7 @@ import { PopulationProvider } from "../providers/PopulationProvider";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <PopulationProvider>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </PopulationProvider>
   );
 }

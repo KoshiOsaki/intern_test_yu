@@ -13,27 +13,29 @@ export const CheckBox = memo(function CheckBox({ id }: Props) {
 
   //チェック済の人口データを取得する関数
   const fetchPopulation = async () => {
-    const headers = { "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY as string };
-    const _populationList = [...populationList];
-    for (var i = 0; i < 47; i++) {
-      if (_populationList[i].checked) {
+    try {
+      const headers = {
+        "X-API-KEY": process.env.NEXT_PUBLIC_API_KEY as string,
+      };
+      const _populationList = [...populationList];
+      if (_populationList[id].checked) {
         const result = await axios.get(
           `https://opendata.resas-portal.go.jp/api/v1/population/composition/perYear?prefCode=${
-            i + 1
+            id + 1
           }`,
           {
             headers: headers,
           }
         );
-        _populationList[i].population = [];
+        _populationList[id].population = [];
         result.data.result.data[0].data.forEach((yv: YearValueData) => {
-          _populationList[i].population.push(yv);
+          _populationList[id].population.push(yv);
         });
-      } else {
-        _populationList[i].population = [];
       }
+      setPopulationList(_populationList);
+    } catch (error) {
+      console.log(error);
     }
-    setPopulationList(_populationList);
   };
 
   const handleChange = () => {

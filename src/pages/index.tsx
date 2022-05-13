@@ -7,8 +7,10 @@ import { PrefChart } from "../components/PrefChart";
 import { CheckBox } from "../components/CheckBox";
 import { Meta } from "../components/Meta";
 import { PopulationContext } from "../providers/PopulationProvider";
+import { useFetchPrefData } from "../hooks/useFetchPref";
 
 export const getStaticProps = async () => {
+  // const {prefList}=useFetchPrefData()
   try {
     //　都道府県リストの作成
     const prefList: Pref[] = [];
@@ -47,7 +49,6 @@ export const getStaticProps = async () => {
     console.log(error);
   }
 };
-
 interface Props {
   defaultPopulationList: Population[];
 }
